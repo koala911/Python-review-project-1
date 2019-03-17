@@ -422,6 +422,11 @@ def RunGame():
 
             f = Food()
             s.increase()
+            
+            global FPS
+            FPS *= FPS
+            FPS += 2
+            FPS = FPS ** 0.5
 
         else:
 

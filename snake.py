@@ -51,7 +51,10 @@ class Snake:
     # move of snake on one cell
 
     def move(self):
-
+        '''
+        Moves the snake on one cell
+        :return:
+        '''
         self.moveHead()
         if not game.DEFEAT:
             self.moveTail()
@@ -66,7 +69,10 @@ class Snake:
         display.update(r)
 
     def moveHead(self):
-
+        '''
+        Moves the head on one cell
+        :return:
+        '''
         if (self.next[self.head[1]][self.head[0]] == 'UP'):
 
             # if snake bumped
@@ -164,7 +170,10 @@ class Snake:
                 self.next[self.head[1]][self.head[0]] = 'LEFT'
 
     def moveTail(self):
-
+        '''
+        Moves the tail on one cell
+        :return:
+        '''
         if (self.next[self.tail[1]][self.tail[0]] == 'UP'):
 
             r = Rect(self.tail[0] * SIZE_OF_CELL, self.tail[1] * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL)
@@ -225,7 +234,10 @@ class Snake:
     # increase of length on one point
 
     def increase(self):
-
+        '''
+        Increases the length on one point, when snake eat the food
+        :return:
+        '''
         self.moveHead()
 
         self.length += 1
@@ -237,7 +249,10 @@ class Snake:
         display.update(r)
 
     def PrintGameOver(self):
-
+        '''
+        Prints 'Game over' and score
+        :return:
+        '''
         gameOver = text.render('Game over', 1, (0, 0, 5))
         placeOfGameOver = gameOver.get_rect(center=(self.initial[0] * SIZE_OF_CELL, self.initial[1] * SIZE_OF_CELL))
         mainSurface.blit(gameOver, placeOfGameOver)

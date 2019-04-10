@@ -41,6 +41,10 @@ display.update()
 NumOfPalyers = False
 
 def run():
+    '''
+    This function starts the game
+    :return:
+    '''
     global NumOfPalyers, WIN_WIDTH, WIN_HEIGHT, SIZE_OF_CELL, COLOUR_OF_FIELD, DEFEAT
 
     while not NumOfPalyers:
@@ -98,7 +102,11 @@ def run():
                 break
 
     def OnePlayerGame(acceleration=False):
-
+        '''
+        This function starts the game for one player
+        :param acceleration:
+        :return:
+        '''
         global DEFEAT
         DEFEAT = False
         my_field.update_field()
@@ -289,6 +297,11 @@ def run():
                 clock.tick(FPS)
 
     def TwoPlayersGame(acceleration=False):
+        '''
+        This function starts the game for two players
+        :param acceleration:
+        :return:
+        '''
         global DEFEAT
         DEFEAT = False
         my_field.update_field()

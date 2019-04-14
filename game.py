@@ -40,563 +40,561 @@ display.update()
 
 NumOfPalyers = False
 
-def run():
-    '''
-    This function starts the game
-    :return:
-    '''
-    global NumOfPalyers, WIN_WIDTH, WIN_HEIGHT, SIZE_OF_CELL, COLOUR_OF_FIELD, DEFEAT
-
-    while not NumOfPalyers:
-
-        for i in event.get():
-
-            if i.type == QUIT:
-                exit()
-
-            elif (i.type == MOUSEBUTTONDOWN and placeOfOnePlayerButton.collidepoint(i.pos)):
-
-                NumOfPalyers = 1
-                break
-
-            elif (i.type == MOUSEBUTTONDOWN and placeOfTwoPlayersButton.collidepoint(i.pos)):
-
-                NumOfPalyers = 2
-                break
-
-    # buttons
-    mainSurface.fill(COLOUR_OF_FIELD)
-
-    EasyButton = text.render('Easy', 1, (50, 100, 100), (0, 240, 200))
-    placeOfEasyButton = EasyButton.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 - 150))
-    mainSurface.blit(EasyButton, placeOfEasyButton)
-    MediumButton = text.render('Medium', 1, (50, 100, 100), (0, 240, 200))
-    placeOfMediumButton = MediumButton.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
-    mainSurface.blit(MediumButton, placeOfMediumButton)
-    HardButton = text.render('Hard', 1, (50, 100, 100), (0, 240, 200))
-    placeOfHardButton = HardButton.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 150))
-    mainSurface.blit(HardButton, placeOfHardButton)
-    display.update()
-
-    mode = False
-    while not mode:
-
-        for i in event.get():
-
-            if i.type == QUIT:
-                exit()
-
-            elif (i.type == MOUSEBUTTONDOWN and placeOfEasyButton.collidepoint(i.pos)):
-
-                mode = 1
-                break
-
-            elif (i.type == MOUSEBUTTONDOWN and placeOfMediumButton.collidepoint(i.pos)):
-
-                mode = 2
-                break
-
-            elif (i.type == MOUSEBUTTONDOWN and placeOfHardButton.collidepoint(i.pos)):
-
-                mode = 3
-                break
-
-    def OnePlayerGame(acceleration=False):
+class Game:
+    def run(self):
         '''
-        This function starts the game for one player
-        :param acceleration:
-        :return:
+        This function starts the game
         '''
-        global DEFEAT
-        DEFEAT = False
-        my_field.update_field()
+        global NumOfPalyers, WIN_WIDTH, WIN_HEIGHT, SIZE_OF_CELL, COLOUR_OF_FIELD, DEFEAT
 
-        mainSurface.fill(COLOUR_OF_FIELD)
-
-        # barriers (for hard mode)
-        if (mode == 3):
-
-            for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)) + 1, (WIN_WIDTH // SIZE_OF_CELL) - 6]:
-
-                for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
-                    barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
-                    barrier.fill(COLOUR_OF_FIELD)
-                    draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
-                    draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
-
-                    my_field.FIELD[j][i] = 1
-
-                    mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
-
-                    display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
-
-        s = snake.Snake()
-
-        # title "Press ... to start"
-        PressToStart = text.render('Press SPACE or click to start', 1, (50, 100, 100))
-        placeOfPressToStart = PressToStart.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
-        mainSurface.blit(PressToStart, placeOfPressToStart)
-        display.update(placeOfPressToStart)
-
-        gameStarted = False
-
-        while not gameStarted:
+        while not NumOfPalyers:
 
             for i in event.get():
 
                 if i.type == QUIT:
-
                     exit()
 
-                elif ((i.type == KEYDOWN and i.key == K_SPACE) or (i.type == MOUSEBUTTONDOWN)):
+                elif (i.type == MOUSEBUTTONDOWN and placeOfOnePlayerButton.collidepoint(i.pos)):
 
-                    gameStarted = True
+                    NumOfPalyers = 1
                     break
 
+                elif (i.type == MOUSEBUTTONDOWN and placeOfTwoPlayersButton.collidepoint(i.pos)):
+
+                    NumOfPalyers = 2
+                    break
+
+        # buttons
         mainSurface.fill(COLOUR_OF_FIELD)
 
-        # barriers (for hard mode)
-        if (mode == 3):
+        EasyButton = text.render('Easy', 1, (50, 100, 100), (0, 240, 200))
+        placeOfEasyButton = EasyButton.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 - 150))
+        mainSurface.blit(EasyButton, placeOfEasyButton)
+        MediumButton = text.render('Medium', 1, (50, 100, 100), (0, 240, 200))
+        placeOfMediumButton = MediumButton.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
+        mainSurface.blit(MediumButton, placeOfMediumButton)
+        HardButton = text.render('Hard', 1, (50, 100, 100), (0, 240, 200))
+        placeOfHardButton = HardButton.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2 + 150))
+        mainSurface.blit(HardButton, placeOfHardButton)
+        display.update()
 
-            for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)) + 1, (WIN_WIDTH // SIZE_OF_CELL) - 6]:
-
-                for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
-                    barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
-                    barrier.fill(COLOUR_OF_FIELD)
-                    draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
-                    draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
-
-                    my_field.FIELD[j][i] = 1
-
-                    mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
-
-                    display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
-
-        f = Food()
-
-        FPS = 8
-
-        # main loop
-        while not DEFEAT:
+        mode = False
+        while not mode:
 
             for i in event.get():
 
                 if i.type == QUIT:
-
                     exit()
 
-                elif (i.type == KEYDOWN):  # changing direction of snake
+                elif (i.type == MOUSEBUTTONDOWN and placeOfEasyButton.collidepoint(i.pos)):
 
-                    if ((i.key == K_UP or i.key == K_w) and (s.next[s.head[1]][s.head[0]] != 'DOWN') and
-                            s.next[s.head[1]][s.head[0]] != 'UP'):
+                    mode = 1
+                    break
 
-                        s.next[s.head[1]][s.head[0]] = 'UP'
+                elif (i.type == MOUSEBUTTONDOWN and placeOfMediumButton.collidepoint(i.pos)):
 
+                    mode = 2
+                    break
+
+                elif (i.type == MOUSEBUTTONDOWN and placeOfHardButton.collidepoint(i.pos)):
+
+                    mode = 3
+                    break
+
+        def OnePlayerGame(acceleration=False):
+            '''
+            This function starts the game for one player
+            :param acceleration: True, if snake moves with acceleration
+            '''
+            global DEFEAT
+            DEFEAT = False
+            my_field.update_field()
+
+            mainSurface.fill(COLOUR_OF_FIELD)
+
+            # barriers (for hard mode)
+            if (mode == 3):
+
+                for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)) + 1, (WIN_WIDTH // SIZE_OF_CELL) - 6]:
+
+                    for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
+                        barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
+                        barrier.fill(COLOUR_OF_FIELD)
+                        draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
+                        draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
+
+                        my_field.FIELD[j][i] = 1
+
+                        mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+
+                        display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+
+            s = snake.Snake()
+
+            # title "Press ... to start"
+            PressToStart = text.render('Press SPACE or click to start', 1, (50, 100, 100))
+            placeOfPressToStart = PressToStart.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
+            mainSurface.blit(PressToStart, placeOfPressToStart)
+            display.update(placeOfPressToStart)
+
+            gameStarted = False
+
+            while not gameStarted:
+
+                for i in event.get():
+
+                    if i.type == QUIT:
+
+                        exit()
+
+                    elif ((i.type == KEYDOWN and i.key == K_SPACE) or (i.type == MOUSEBUTTONDOWN)):
+
+                        gameStarted = True
                         break
 
-                    elif ((i.key == K_DOWN or i.key == K_s) and s.next[s.head[1]][s.head[0]] != 'UP' and
-                          s.next[s.head[1]][s.head[0]] != 'DOWN'):
+            mainSurface.fill(COLOUR_OF_FIELD)
 
-                        s.next[s.head[1]][s.head[0]] = 'DOWN'
+            # barriers (for hard mode)
+            if (mode == 3):
 
-                        break
+                for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)) + 1, (WIN_WIDTH // SIZE_OF_CELL) - 6]:
 
-                    elif ((i.key == K_RIGHT or i.key == K_d) and s.next[s.head[1]][s.head[0]] != 'LEFT' and
-                          s.next[s.head[1]][s.head[0]] != 'RIGHT'):
+                    for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
+                        barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
+                        barrier.fill(COLOUR_OF_FIELD)
+                        draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
+                        draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
 
-                        s.next[s.head[1]][s.head[0]] = 'RIGHT'
+                        my_field.FIELD[j][i] = 1
 
-                        break
+                        mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
 
-                    elif ((i.key == K_LEFT or i.key == K_a) and s.next[s.head[1]][s.head[0]] != 'RIGHT' and
-                          s.next[s.head[1]][s.head[0]] != 'LEFT'):
+                        display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
 
-                        s.next[s.head[1]][s.head[0]] = 'LEFT'
+            f = Food()
 
-                        break
+            FPS = 8
 
-            if (s.head == [f.x, f.y]):  # if snake finds a food
+            # main loop
+            while not DEFEAT:
 
-                f = Food()
-                s.increase()
+                for i in event.get():
 
-                if (acceleration):
-                    FPS *= FPS
-                    FPS += 2
-                    FPS = FPS ** 0.5
+                    if i.type == QUIT:
 
-            else:
+                        exit()
 
-                s.move()
+                    elif (i.type == KEYDOWN):  # changing direction of snake
 
-            if DEFEAT:
+                        if ((i.key == K_UP or i.key == K_w) and (s.next[s.head[1]][s.head[0]] != 'DOWN') and
+                                s.next[s.head[1]][s.head[0]] != 'UP'):
 
-                s.PrintGameOver()
+                            s.next[s.head[1]][s.head[0]] = 'UP'
 
-                restartGame = False
-                while not restartGame:
-
-                    for i in event.get():
-
-                        if ((i.type == KEYDOWN and i.key == K_SPACE) or i.type == MOUSEBUTTONDOWN):
-                            restartGame = True
                             break
 
-                        elif (i.type == QUIT):
-                            exit()
+                        elif ((i.key == K_DOWN or i.key == K_s) and s.next[s.head[1]][s.head[0]] != 'UP' and
+                              s.next[s.head[1]][s.head[0]] != 'DOWN'):
 
-                break
+                            s.next[s.head[1]][s.head[0]] = 'DOWN'
 
-            # score update
+                            break
 
-            for i in range(3):
-                mainSurface.blit(field, Rect(i * SIZE_OF_CELL, 0, 0, 0))
-                display.update(Rect(i * SIZE_OF_CELL, 0, 0, 0))
+                        elif ((i.key == K_RIGHT or i.key == K_d) and s.next[s.head[1]][s.head[0]] != 'LEFT' and
+                              s.next[s.head[1]][s.head[0]] != 'RIGHT'):
 
-            for i in range(3):
+                            s.next[s.head[1]][s.head[0]] = 'RIGHT'
 
-                if (s.location[0][i] == 1):
+                            break
 
-                    if (s.head == [i, 0]):
+                        elif ((i.key == K_LEFT or i.key == K_a) and s.next[s.head[1]][s.head[0]] != 'RIGHT' and
+                              s.next[s.head[1]][s.head[0]] != 'LEFT'):
 
-                        mainSurface.blit(s.head_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+                            s.next[s.head[1]][s.head[0]] = 'LEFT'
 
-                    else:
+                            break
 
-                        mainSurface.blit(s.body_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+                if (s.head == [f.x_coord, f.y_coord]):  # if snake finds a food
 
-                elif (f.x == i and f.y == 0):
+                    f = Food()
+                    s.increase()
 
-                    mainSurface.blit(f.look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+                    if (acceleration):
+                        FPS *= FPS
+                        FPS += 2
+                        FPS = FPS ** 0.5
 
-            score = smallText.render('Score: {}'.format(s.length), 1, (0, 0, 30))
-            placeOfScore = score.get_rect()
-            mainSurface.blit(score, placeOfScore)
-            display.update(placeOfScore)
+                else:
 
-            # delay
+                    s.move()
 
-            # if snake is nearby any barrier
-            if ((s.next[s.head[1]][s.head[0]] == 'LEFT' and my_field.FIELD[s.head[1]][
-                (s.head[0] - 1) % (WIN_WIDTH // SIZE_OF_CELL)])
-                    or (s.next[s.head[1]][s.head[0]] == 'UP' and
-                        my_field.FIELD[(s.head[1] - 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])
-                    or (s.next[s.head[1]][s.head[0]] == 'RIGHT' and my_field.FIELD[s.head[1]][
-                        (s.head[0] + 1) % (WIN_WIDTH // SIZE_OF_CELL)])
-                    or (s.next[s.head[1]][s.head[0]] == 'DOWN' and
-                        my_field.FIELD[(s.head[1] + 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])):
+                if DEFEAT:
 
-                clock.tick(FPS - 3)
+                    s.PrintGameOver()
 
-            else:
+                    restartGame = False
+                    while not restartGame:
 
-                clock.tick(FPS)
+                        for i in event.get():
 
-    def TwoPlayersGame(acceleration=False):
-        '''
-        This function starts the game for two players
-        :param acceleration:
-        :return:
-        '''
-        global DEFEAT
-        DEFEAT = False
-        my_field.update_field()
+                            if ((i.type == KEYDOWN and i.key == K_SPACE) or i.type == MOUSEBUTTONDOWN):
+                                restartGame = True
+                                break
 
-        mainSurface.fill(COLOUR_OF_FIELD)
+                            elif (i.type == QUIT):
+                                exit()
 
-        # barriers (for hard mode)
-        if (mode == 3):
-
-            for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)), (WIN_WIDTH // SIZE_OF_CELL) - 6]:
-
-                for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
-                    barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
-                    barrier.fill(COLOUR_OF_FIELD)
-                    draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
-                    draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
-
-                    my_field.FIELD[j][i] = 1
-
-                    mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
-
-                    display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
-
-        sRight = snake.Snake(x=(WIN_WIDTH // SIZE_OF_CELL) * 3 // 4)
-        sLeft = snake.Snake(x=(WIN_WIDTH // SIZE_OF_CELL) // 4, colour=(70, 0, 255))
-
-        # title "Press ... to start"
-        PressToStart = text.render('Press SPACE or click to start', 1, (50, 100, 100))
-        placeOfPressToStart = PressToStart.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
-        mainSurface.blit(PressToStart, placeOfPressToStart)
-        display.update(placeOfPressToStart)
-
-        gameStarted = False
-
-        while not gameStarted:
-
-            for i in event.get():
-
-                if i.type == QUIT:
-
-                    exit()
-
-                elif ((i.type == KEYDOWN and i.key == K_SPACE) or (i.type == MOUSEBUTTONDOWN)):
-
-                    gameStarted = True
                     break
 
-        mainSurface.fill(COLOUR_OF_FIELD)
+                # score update
 
-        # barriers (for hard mode)
-        if (mode == 3):
+                for i in range(3):
+                    mainSurface.blit(field, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+                    display.update(Rect(i * SIZE_OF_CELL, 0, 0, 0))
 
-            for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)), (WIN_WIDTH // SIZE_OF_CELL) - 6]:
+                for i in range(3):
 
-                for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
-                    barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
-                    barrier.fill(COLOUR_OF_FIELD)
-                    draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
-                    draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
-                    draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
+                    if (s.location[0][i] == 1):
 
-                    my_field.FIELD[j][i] = 1
+                        if (s.head == [i, 0]):
 
-                    mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+                            mainSurface.blit(s.head_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
 
-                    display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+                        else:
 
-        f = Food()
+                            mainSurface.blit(s.body_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
 
-        FPS = 8
+                    elif (f.x_coord == i and f.y_coord == 0):
 
-        leftMove = False
-        rightMove = False
+                        mainSurface.blit(f.look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
 
-        # main loop
-        while not DEFEAT:
+                score = smallText.render('Score: {}'.format(s.length), 1, (0, 0, 30))
+                placeOfScore = score.get_rect()
+                mainSurface.blit(score, placeOfScore)
+                display.update(placeOfScore)
+
+                # delay
+
+                # if snake is nearby any barrier
+                if ((s.next[s.head[1]][s.head[0]] == 'LEFT' and my_field.FIELD[s.head[1]][
+                    (s.head[0] - 1) % (WIN_WIDTH // SIZE_OF_CELL)])
+                        or (s.next[s.head[1]][s.head[0]] == 'UP' and
+                            my_field.FIELD[(s.head[1] - 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])
+                        or (s.next[s.head[1]][s.head[0]] == 'RIGHT' and my_field.FIELD[s.head[1]][
+                            (s.head[0] + 1) % (WIN_WIDTH // SIZE_OF_CELL)])
+                        or (s.next[s.head[1]][s.head[0]] == 'DOWN' and
+                            my_field.FIELD[(s.head[1] + 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])):
+
+                    clock.tick(FPS - 3)
+
+                else:
+
+                    clock.tick(FPS)
+
+        def TwoPlayersGame(acceleration=False):
+            '''
+            This function starts the game for two players
+            :param acceleration: True, if snakes moves with acceleration
+            '''
+            global DEFEAT
+            DEFEAT = False
+            my_field.update_field()
+
+            mainSurface.fill(COLOUR_OF_FIELD)
+
+            # barriers (for hard mode)
+            if (mode == 3):
+
+                for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)), (WIN_WIDTH // SIZE_OF_CELL) - 6]:
+
+                    for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
+                        barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
+                        barrier.fill(COLOUR_OF_FIELD)
+                        draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
+                        draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
+
+                        my_field.FIELD[j][i] = 1
+
+                        mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+
+                        display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+
+            sRight = snake.Snake(x_coord=(WIN_WIDTH // SIZE_OF_CELL) * 3 // 4)
+            sLeft = snake.Snake(x_coord=(WIN_WIDTH // SIZE_OF_CELL) // 4, colour=(70, 0, 255))
+
+            # title "Press ... to start"
+            PressToStart = text.render('Press SPACE or click to start', 1, (50, 100, 100))
+            placeOfPressToStart = PressToStart.get_rect(center=(WIN_WIDTH // 2, WIN_HEIGHT // 2))
+            mainSurface.blit(PressToStart, placeOfPressToStart)
+            display.update(placeOfPressToStart)
+
+            gameStarted = False
+
+            while not gameStarted:
+
+                for i in event.get():
+
+                    if i.type == QUIT:
+
+                        exit()
+
+                    elif ((i.type == KEYDOWN and i.key == K_SPACE) or (i.type == MOUSEBUTTONDOWN)):
+
+                        gameStarted = True
+                        break
+
+            mainSurface.fill(COLOUR_OF_FIELD)
+
+            # barriers (for hard mode)
+            if (mode == 3):
+
+                for i in [5, (WIN_WIDTH // (2 * SIZE_OF_CELL)), (WIN_WIDTH // SIZE_OF_CELL) - 6]:
+
+                    for j in [(WIN_HEIGHT // (2 * SIZE_OF_CELL)) + 3, (WIN_HEIGHT // (2 * SIZE_OF_CELL)) - 3]:
+                        barrier = Surface((SIZE_OF_CELL, SIZE_OF_CELL))
+                        barrier.fill(COLOUR_OF_FIELD)
+                        draw.line(barrier, (70, 70, 70), (0, 0), (SIZE_OF_CELL, SIZE_OF_CELL), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL), (SIZE_OF_CELL, 0), 15)
+                        draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
+                        draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
+
+                        my_field.FIELD[j][i] = 1
+
+                        mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+
+                        display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
+
+            f = Food()
+
+            FPS = 8
 
             leftMove = False
             rightMove = False
 
-            for i in event.get():
+            # main loop
+            while not DEFEAT:
 
-                if i.type == QUIT:
+                leftMove = False
+                rightMove = False
 
-                    exit()
+                for i in event.get():
 
-                elif (i.type == KEYDOWN):  # changing direction of snake
+                    if i.type == QUIT:
 
-                    if ((i.key == K_UP) and (sRight.next[sRight.head[1]][sRight.head[0]] != 'DOWN')
-                            and sRight.next[sRight.head[1]][sRight.head[0]] != 'UP' and not rightMove):
+                        exit()
 
-                        sRight.next[sRight.head[1]][sRight.head[0]] = 'UP'
-                        rightMove = True
+                    elif (i.type == KEYDOWN):  # changing direction of snake
 
-                    elif ((i.key == K_DOWN) and sRight.next[sRight.head[1]][sRight.head[0]] != 'UP'
-                          and sRight.next[sRight.head[1]][sRight.head[0]] != 'DOWN' and not rightMove):
+                        if ((i.key == K_UP) and (sRight.next[sRight.head[1]][sRight.head[0]] != 'DOWN')
+                                and sRight.next[sRight.head[1]][sRight.head[0]] != 'UP' and not rightMove):
 
-                        sRight.next[sRight.head[1]][sRight.head[0]] = 'DOWN'
-                        rightMove = True
+                            sRight.next[sRight.head[1]][sRight.head[0]] = 'UP'
+                            rightMove = True
 
-                    elif ((i.key == K_RIGHT) and sRight.next[sRight.head[1]][sRight.head[0]] != 'LEFT'
-                          and sRight.next[sRight.head[1]][sRight.head[0]] != 'RIGHT' and not rightMove):
+                        elif ((i.key == K_DOWN) and sRight.next[sRight.head[1]][sRight.head[0]] != 'UP'
+                              and sRight.next[sRight.head[1]][sRight.head[0]] != 'DOWN' and not rightMove):
 
-                        sRight.next[sRight.head[1]][sRight.head[0]] = 'RIGHT'
-                        rightMove = True
+                            sRight.next[sRight.head[1]][sRight.head[0]] = 'DOWN'
+                            rightMove = True
 
-                    elif ((i.key == K_LEFT) and sRight.next[sRight.head[1]][sRight.head[0]] != 'RIGHT'
-                          and sRight.next[sRight.head[1]][sRight.head[0]] != 'LEFT' and not rightMove):
+                        elif ((i.key == K_RIGHT) and sRight.next[sRight.head[1]][sRight.head[0]] != 'LEFT'
+                              and sRight.next[sRight.head[1]][sRight.head[0]] != 'RIGHT' and not rightMove):
 
-                        sRight.next[sRight.head[1]][sRight.head[0]] = 'LEFT'
-                        rightMove = True
+                            sRight.next[sRight.head[1]][sRight.head[0]] = 'RIGHT'
+                            rightMove = True
 
-                    elif ((i.key == K_w) and (sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'DOWN')
-                          and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'UP' and not leftMove):
+                        elif ((i.key == K_LEFT) and sRight.next[sRight.head[1]][sRight.head[0]] != 'RIGHT'
+                              and sRight.next[sRight.head[1]][sRight.head[0]] != 'LEFT' and not rightMove):
 
-                        sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'UP'
-                        leftMove = True
+                            sRight.next[sRight.head[1]][sRight.head[0]] = 'LEFT'
+                            rightMove = True
 
-                    elif ((i.key == K_s) and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'UP'
-                          and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'DOWN' and not leftMove):
+                        elif ((i.key == K_w) and (sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'DOWN')
+                              and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'UP' and not leftMove):
 
-                        sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'DOWN'
-                        leftMove = True
+                            sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'UP'
+                            leftMove = True
 
-                    elif ((i.key == K_d) and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'LEFT' and
-                          sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'RIGHT' and not leftMove):
+                        elif ((i.key == K_s) and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'UP'
+                              and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'DOWN' and not leftMove):
 
-                        sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'RIGHT'
-                        leftMove = True
+                            sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'DOWN'
+                            leftMove = True
 
-                    elif ((i.key == K_a) and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'RIGHT' and
-                          sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'LEFT' and not leftMove):
+                        elif ((i.key == K_d) and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'LEFT' and
+                              sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'RIGHT' and not leftMove):
 
-                        sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'LEFT'
-                        leftMove = True
+                            sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'RIGHT'
+                            leftMove = True
 
-                if (rightMove and leftMove):
+                        elif ((i.key == K_a) and sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'RIGHT' and
+                              sLeft.next[sLeft.head[1]][sLeft.head[0]] != 'LEFT' and not leftMove):
+
+                            sLeft.next[sLeft.head[1]][sLeft.head[0]] = 'LEFT'
+                            leftMove = True
+
+                    if (rightMove and leftMove):
+                        break
+
+                if (sRight.head == [f.x_coord, f.y_coord]):  # if snake finds a food
+
+                    f = Food()
+                    sRight.increase()
+
+                    if (acceleration):
+                        FPS *= FPS
+                        FPS += 2
+                        FPS = FPS ** 0.5
+
+                else:
+
+                    sRight.move()
+
+                if DEFEAT:
+
+                    sRight.PrintGameOver()
+                    sLeft.PrintGameOver()
+
+                    restartGame = False
+                    while not restartGame:
+
+                        for i in event.get():
+
+                            if ((i.type == KEYDOWN and i.key == K_SPACE) or i.type == MOUSEBUTTONDOWN):
+
+                                restartGame = True
+                                break
+
+                            elif (i.type == QUIT):
+                                exit()
+
                     break
 
-            if (sRight.head == [f.x, f.y]):  # if snake finds a food
+                if (sLeft.head == [f.x_coord, f.y_coord]):  # if snake finds a food
 
-                f = Food()
-                sRight.increase()
+                    f = Food()
+                    sLeft.increase()
 
-                if (acceleration):
-                    FPS *= FPS
-                    FPS += 2
-                    FPS = FPS ** 0.5
+                    if (acceleration):
+                        FPS *= FPS
+                        FPS += 2
+                        FPS = FPS ** 0.5
+
+                else:
+
+                    sLeft.move()
+
+                if DEFEAT:
+
+                    sRight.PrintGameOver()
+                    sLeft.PrintGameOver()
+
+                    restartGame = False
+                    while not restartGame:
+
+                        for i in event.get():
+
+                            if ((i.type == KEYDOWN and i.key == K_SPACE) or i.type == MOUSEBUTTONDOWN):
+                                restartGame = True
+                                break
+
+                            elif (i.type == QUIT):
+                                exit()
+
+                    break
+
+                # score update
+
+                for i in range(3):
+                    mainSurface.blit(field, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+                    display.update(Rect(i * SIZE_OF_CELL, 0, 0, 0))
+
+                for i in range(3):
+
+                    if (sRight.location[0][i] == 1):
+
+                        if (sRight.head == [i, 0]):
+
+                            mainSurface.blit(sRight.head_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+
+                        else:
+
+                            mainSurface.blit(sRight.body_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+
+                    elif (sLeft.location[0][i] == 1):
+
+                        if (sLeft.head == [i, 0]):
+
+                            mainSurface.blit(sLeft.head_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+
+                        else:
+
+                            mainSurface.blit(sLeft.body_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+
+                    elif (f.x_coord == i and f.y_coord == 0):
+
+                        mainSurface.blit(f.look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
+
+                score = smallText.render('Score: {}'.format(sLeft.length), 1, (0, 0, 30))
+                placeOfScore = score.get_rect()
+                mainSurface.blit(score, placeOfScore)
+                display.update(placeOfScore)
+
+                for i in range(3):
+                    mainSurface.blit(field, Rect((WIN_WIDTH // SIZE_OF_CELL - i) * SIZE_OF_CELL + 65, 0, 0, 0))
+                    display.update(Rect((WIN_WIDTH // SIZE_OF_CELL - i) * SIZE_OF_CELL + 65, 0, 0, 0))
+
+                for i in range(3):
+
+                    if (sRight.location[0][(WIN_WIDTH // SIZE_OF_CELL) - i - 1] == 1):
+
+                        if (sRight.head == [(WIN_WIDTH // SIZE_OF_CELL - i - 1), 0]):
+
+                            mainSurface.blit(sRight.head_look,
+                                             Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
+
+                        else:
+
+                            mainSurface.blit(sRight.body_look,
+                                             Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
+
+                    elif (sLeft.location[0][(WIN_WIDTH // SIZE_OF_CELL - i - 1)] == 1):
+
+                        if (sLeft.head == [(WIN_WIDTH // SIZE_OF_CELL - i - 1), 0]):
+
+                            mainSurface.blit(sLeft.head_look,
+                                             Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
+
+                        else:
+
+                            mainSurface.blit(sLeft.body_look,
+                                             Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
+
+                    elif (f.x_coord == (WIN_WIDTH // SIZE_OF_CELL - i - 1) and f.y_coord == 0):
+
+                        mainSurface.blit(f.look, Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
+
+                score = smallText.render('Score: {}'.format(sRight.length), 1, (0, 0, 30))
+                placeOfScore = score.get_rect(x=(WIN_WIDTH // SIZE_OF_CELL - 3) * SIZE_OF_CELL + 65)
+                mainSurface.blit(score, placeOfScore)
+                display.update(placeOfScore)
+
+                # delay
+                clock.tick(FPS)
+
+        # game start
+
+        while True:
+            if (NumOfPalyers == 1):
+
+                OnePlayerGame(acceleration=(mode > 1))
 
             else:
 
-                sRight.move()
-
-            if DEFEAT:
-
-                sRight.PrintGameOver()
-                sLeft.PrintGameOver()
-
-                restartGame = False
-                while not restartGame:
-
-                    for i in event.get():
-
-                        if ((i.type == KEYDOWN and i.key == K_SPACE) or i.type == MOUSEBUTTONDOWN):
-
-                            restartGame = True
-                            break
-
-                        elif (i.type == QUIT):
-                            exit()
-
-                break
-
-            if (sLeft.head == [f.x, f.y]):  # if snake finds a food
-
-                f = Food()
-                sLeft.increase()
-
-                if (acceleration):
-                    FPS *= FPS
-                    FPS += 2
-                    FPS = FPS ** 0.5
-
-            else:
-
-                sLeft.move()
-
-            if DEFEAT:
-
-                sRight.PrintGameOver()
-                sLeft.PrintGameOver()
-
-                restartGame = False
-                while not restartGame:
-
-                    for i in event.get():
-
-                        if ((i.type == KEYDOWN and i.key == K_SPACE) or i.type == MOUSEBUTTONDOWN):
-                            restartGame = True
-                            break
-
-                        elif (i.type == QUIT):
-                            exit()
-
-                break
-
-            # score update
-
-            for i in range(3):
-                mainSurface.blit(field, Rect(i * SIZE_OF_CELL, 0, 0, 0))
-                display.update(Rect(i * SIZE_OF_CELL, 0, 0, 0))
-
-            for i in range(3):
-
-                if (sRight.location[0][i] == 1):
-
-                    if (sRight.head == [i, 0]):
-
-                        mainSurface.blit(sRight.head_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
-
-                    else:
-
-                        mainSurface.blit(sRight.body_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
-
-                elif (sLeft.location[0][i] == 1):
-
-                    if (sLeft.head == [i, 0]):
-
-                        mainSurface.blit(sLeft.head_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
-
-                    else:
-
-                        mainSurface.blit(sLeft.body_look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
-
-                elif (f.x == i and f.y == 0):
-
-                    mainSurface.blit(f.look, Rect(i * SIZE_OF_CELL, 0, 0, 0))
-
-            score = smallText.render('Score: {}'.format(sLeft.length), 1, (0, 0, 30))
-            placeOfScore = score.get_rect()
-            mainSurface.blit(score, placeOfScore)
-            display.update(placeOfScore)
-
-            for i in range(3):
-                mainSurface.blit(field, Rect((WIN_WIDTH // SIZE_OF_CELL - i) * SIZE_OF_CELL + 65, 0, 0, 0))
-                display.update(Rect((WIN_WIDTH // SIZE_OF_CELL - i) * SIZE_OF_CELL + 65, 0, 0, 0))
-
-            for i in range(3):
-
-                if (sRight.location[0][(WIN_WIDTH // SIZE_OF_CELL) - i - 1] == 1):
-
-                    if (sRight.head == [(WIN_WIDTH // SIZE_OF_CELL - i - 1), 0]):
-
-                        mainSurface.blit(sRight.head_look,
-                                         Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
-
-                    else:
-
-                        mainSurface.blit(sRight.body_look,
-                                         Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
-
-                elif (sLeft.location[0][(WIN_WIDTH // SIZE_OF_CELL - i - 1)] == 1):
-
-                    if (sLeft.head == [(WIN_WIDTH // SIZE_OF_CELL - i - 1), 0]):
-
-                        mainSurface.blit(sLeft.head_look,
-                                         Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
-
-                    else:
-
-                        mainSurface.blit(sLeft.body_look,
-                                         Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
-
-                elif (f.x == (WIN_WIDTH // SIZE_OF_CELL - i - 1) and f.y == 0):
-
-                    mainSurface.blit(f.look, Rect((WIN_WIDTH // SIZE_OF_CELL - i - 1) * SIZE_OF_CELL, 0, 0, 0))
-
-            score = smallText.render('Score: {}'.format(sRight.length), 1, (0, 0, 30))
-            placeOfScore = score.get_rect(x=(WIN_WIDTH // SIZE_OF_CELL - 3) * SIZE_OF_CELL + 65)
-            mainSurface.blit(score, placeOfScore)
-            display.update(placeOfScore)
-
-            # delay
-            clock.tick(FPS)
-
-    # game start
-
-    while True:
-        if (NumOfPalyers == 1):
-
-            OnePlayerGame(acceleration=(mode > 1))
-
-        else:
-
-            TwoPlayersGame(acceleration=(mode > 1))
+                TwoPlayersGame(acceleration=(mode > 1))

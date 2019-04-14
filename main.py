@@ -5,4 +5,6 @@ from game import *
 import my_field
 from food import *
 
-run()
+game = Game()
+
+game.run()

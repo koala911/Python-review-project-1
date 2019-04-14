@@ -6,22 +6,29 @@ from food import *
 
 class Snake:
 
-    def __init__(self, colour=(255, 0, 70), x=WIN_WIDTH // (2 * SIZE_OF_CELL), y=WIN_HEIGHT // (2 * SIZE_OF_CELL)):
+    def __init__(self, colour=(255, 0, 70), x_coord=WIN_WIDTH // (2 * SIZE_OF_CELL), y_coord=WIN_HEIGHT // (2 * SIZE_OF_CELL)):
+
+        '''
+        Constructor of class Snake
+        :param colour: colour of snake, tuple of 3 integers (n_1, n_2, n_3), 0 <= n_i <= 255
+        :param x_coord: start x coordinate, integer
+        :param y_coord: start y coordinate, integer
+        '''
 
         # coordinates of head, tail, length
 
-        self.initial = [x, y]
-        self.head = [x, y]
-        self.tail = [x, y + 1]
+        self.initial = [x_coord, y_coord]
+        self.head = [x_coord, y_coord]
+        self.tail = [x_coord, y_coord + 1]
         self.length = 2
 
         # presence in cell of snake
 
         self.location = [[0] * (WIN_WIDTH // SIZE_OF_CELL) for i in range(WIN_HEIGHT // SIZE_OF_CELL)]
-        self.location[y][x] = 1
-        self.location[y + 1][x] = 1
-        my_field.FIELD[y][x] = 1
-        my_field.FIELD[y + 1][x] = 1
+        self.location[y_coord][x_coord] = 1
+        self.location[y_coord + 1][x_coord] = 1
+        my_field.FIELD[y_coord][x_coord] = 1
+        my_field.FIELD[y_coord + 1][x_coord] = 1
 
         # direction of move of element of snake
 
@@ -40,8 +47,8 @@ class Snake:
         draw.circle(self.body_look, (0, 0, 0), (SIZE_OF_CELL // 2, SIZE_OF_CELL // 2), SIZE_OF_CELL // 2, 3)
         draw.circle(self.head_look, (0, 0, 0), (SIZE_OF_CELL // 2, SIZE_OF_CELL // 2), SIZE_OF_CELL // 2)
 
-        r1 = Rect(x * SIZE_OF_CELL, y * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL)
-        r2 = Rect(x * SIZE_OF_CELL, (y + 1) * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL)
+        r1 = Rect(x_coord * SIZE_OF_CELL, y_coord * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL)
+        r2 = Rect(x_coord * SIZE_OF_CELL, (y_coord + 1) * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL)
 
         mainSurface.blit(self.head_look, r1)
         mainSurface.blit(self.body_look, r2)
@@ -53,7 +60,6 @@ class Snake:
     def move(self):
         '''
         Moves the snake on one cell
-        :return:
         '''
         self.moveHead()
         if not game.DEFEAT:
@@ -71,7 +77,6 @@ class Snake:
     def moveHead(self):
         '''
         Moves the head on one cell
-        :return:
         '''
         if (self.next[self.head[1]][self.head[0]] == 'UP'):
 
@@ -172,7 +177,6 @@ class Snake:
     def moveTail(self):
         '''
         Moves the tail on one cell
-        :return:
         '''
         if (self.next[self.tail[1]][self.tail[0]] == 'UP'):
 
@@ -236,7 +240,6 @@ class Snake:
     def increase(self):
         '''
         Increases the length on one point, when snake eat the food
-        :return:
         '''
         self.moveHead()
 
@@ -251,7 +254,6 @@ class Snake:
     def PrintGameOver(self):
         '''
         Prints 'Game over' and score
-        :return:
         '''
         gameOver = text.render('Game over', 1, (0, 0, 5))
         placeOfGameOver = gameOver.get_rect(center=(self.initial[0] * SIZE_OF_CELL, self.initial[1] * SIZE_OF_CELL))

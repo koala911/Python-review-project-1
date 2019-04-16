@@ -263,3 +263,134 @@ class Snake:
         mainSurface.blit(score, placeOfScore)
         display.update(placeOfGameOver)
         display.update(placeOfScore)
+
+    def handleKeyPressuresOnePlayer(self, key):
+        '''
+        Check the pressures of keys
+        :param key: pressed key
+        :return: True, if snake changed the direction
+        '''
+
+        result = False
+
+        if ((key == K_UP or key == K_w) and (self.next[self.head[1]][self.head[0]] != 'DOWN') and
+                self.next[self.head[1]][self.head[0]] != 'UP'):
+
+            self.next[self.head[1]][self.head[0]] = 'UP'
+
+            result = True
+
+        elif ((key == K_DOWN or key == K_s) and self.next[self.head[1]][self.head[0]] != 'UP' and
+              self.next[self.head[1]][self.head[0]] != 'DOWN'):
+
+            self.next[self.head[1]][self.head[0]] = 'DOWN'
+
+            result = True
+
+        elif ((key == K_RIGHT or key == K_d) and self.next[self.head[1]][self.head[0]] != 'LEFT' and
+              self.next[self.head[1]][self.head[0]] != 'RIGHT'):
+
+            self.next[self.head[1]][self.head[0]] = 'RIGHT'
+
+            result = True
+
+        elif ((key == K_LEFT or key == K_a) and self.next[self.head[1]][self.head[0]] != 'RIGHT' and
+              self.next[self.head[1]][self.head[0]] != 'LEFT'):
+
+            self.next[self.head[1]][self.head[0]] = 'LEFT'
+
+            result = True
+
+        return result
+
+    def checkSnakeFoundFood(self, food, acc):
+        '''
+        Check if snake found the food
+        :param food: current food
+        :param acc: True if, snake moves with acceleration
+        :return: True, if snake found food
+        '''
+
+        if (self.head == [food.x_coord, food.y_coord]):  # if snake finds a food
+
+            self.increase()
+
+            if (acc):
+                game.FPS *= game.FPS
+                game.FPS += 2
+                game.FPS = game.FPS ** 0.5
+
+            return True
+
+        else:
+
+            self.move()
+            return False
+
+    def handleKeyPressuresRight(self, key, rightMove):
+        '''
+        Check the pressures of keys
+        :param key: pressed key
+        :param rightMove: True, if direction is already changed
+        :return: True, if snake changed the direction
+        '''
+
+        if ((key == K_UP) and (self.next[self.head[1]][self.head[0]] != 'DOWN')
+                and self.next[self.head[1]][self.head[0]] != 'UP' and not rightMove):
+
+            self.next[self.head[1]][self.head[0]] = 'UP'
+            rightMove = True
+
+        elif ((key == K_DOWN) and self.next[self.head[1]][self.head[0]] != 'UP'
+              and self.next[self.head[1]][self.head[0]] != 'DOWN' and not rightMove):
+
+            self.next[self.head[1]][self.head[0]] = 'DOWN'
+            rightMove = True
+
+        elif ((key == K_RIGHT) and self.next[self.head[1]][self.head[0]] != 'LEFT'
+              and self.next[self.head[1]][self.head[0]] != 'RIGHT' and not rightMove):
+
+            self.next[self.head[1]][self.head[0]] = 'RIGHT'
+            rightMove = True
+
+        elif ((key == K_LEFT) and self.next[self.head[1]][self.head[0]] != 'RIGHT'
+              and self.next[self.head[1]][self.head[0]] != 'LEFT' and not rightMove):
+
+            self.next[self.head[1]][self.head[0]] = 'LEFT'
+            rightMove = True
+
+        return rightMove
+
+    def handleKeyPressuresLeft(self, key, leftMove):
+        '''
+        Check the pressures of keys
+        :param key: pressed key
+        :param leftMove: True, if direction is already changed
+        :return: True, if snake changed the direction
+        '''
+
+        if ((key == K_w) and (self.next[self.head[1]][self.head[0]] != 'DOWN')
+                and self.next[self.head[1]][self.head[0]] != 'UP' and not leftMove):
+
+            self.next[self.head[1]][self.head[0]] = 'UP'
+            leftMove = True
+
+        elif ((key == K_s) and self.next[self.head[1]][self.head[0]] != 'UP'
+              and self.next[self.head[1]][self.head[0]] != 'DOWN' and not leftMove):
+
+            self.next[self.head[1]][self.head[0]] = 'DOWN'
+            leftMove = True
+
+        elif ((key == K_d) and self.next[self.head[1]][self.head[0]] != 'LEFT' and
+              self.next[self.head[1]][self.head[0]] != 'RIGHT' and not leftMove):
+
+            self.next[self.head[1]][self.head[0]] = 'RIGHT'
+            leftMove = True
+
+        elif ((key == K_a) and self.next[self.head[1]][self.head[0]] != 'RIGHT' and
+              self.next[self.head[1]][self.head[0]] != 'LEFT' and not leftMove):
+
+            self.next[self.head[1]][self.head[0]] = 'LEFT'
+            leftMove = True
+
+        return leftMove

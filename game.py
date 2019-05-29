@@ -1,7 +1,6 @@
 from pygame import *
 import random
 import snake
-import my_field
 from food import *
 
 WIN_WIDTH = 1250  # wigth of window
@@ -10,6 +9,7 @@ SIZE_OF_CELL = 50
 COLOUR_OF_FIELD = (200, 240, 200)
 DEFEAT = False
 FPS = 8
+FIELD = []
 
 init()
 mainSurface = display.set_mode((WIN_WIDTH, WIN_HEIGHT))  # main window
@@ -73,7 +73,7 @@ class Game:
             '''
             global DEFEAT
             DEFEAT = False
-            my_field.update_field()
+            self.update_field()
 
             mainSurface.fill(COLOUR_OF_FIELD)
 
@@ -140,7 +140,7 @@ class Game:
             '''
             global DEFEAT
             DEFEAT = False
-            my_field.update_field()
+            self.update_field()
 
             mainSurface.fill(COLOUR_OF_FIELD)
 
@@ -267,14 +267,14 @@ class Game:
         '''
 
         # if snake is nearby any barrier
-        if ((s.next[s.head[1]][s.head[0]] == 'LEFT' and my_field.FIELD[s.head[1]][
+        if ((s.next[s.head[1]][s.head[0]] == 'LEFT' and FIELD[s.head[1]][
             (s.head[0] - 1) % (WIN_WIDTH // SIZE_OF_CELL)])
                 or (s.next[s.head[1]][s.head[0]] == 'UP' and
-                    my_field.FIELD[(s.head[1] - 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])
-                or (s.next[s.head[1]][s.head[0]] == 'RIGHT' and my_field.FIELD[s.head[1]][
+                    FIELD[(s.head[1] - 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])
+                or (s.next[s.head[1]][s.head[0]] == 'RIGHT' and FIELD[s.head[1]][
                     (s.head[0] + 1) % (WIN_WIDTH // SIZE_OF_CELL)])
                 or (s.next[s.head[1]][s.head[0]] == 'DOWN' and
-                    my_field.FIELD[(s.head[1] + 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])):
+                    FIELD[(s.head[1] + 1) % (WIN_HEIGHT // SIZE_OF_CELL)][s.head[0]])):
 
             clock.tick(FPS - 3)
 
@@ -298,7 +298,7 @@ class Game:
                 draw.line(barrier, (70, 70, 70), (0, SIZE_OF_CELL // 2), (SIZE_OF_CELL, SIZE_OF_CELL // 2), 15)
                 draw.line(barrier, (70, 70, 70), (SIZE_OF_CELL // 2, SIZE_OF_CELL), (SIZE_OF_CELL // 2, 0), 15)
 
-                my_field.FIELD[j][i] = 1
+                FIELD[j][i] = 1
 
                 mainSurface.blit(barrier, Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
                 display.update(Rect(i * SIZE_OF_CELL, j * SIZE_OF_CELL, SIZE_OF_CELL, SIZE_OF_CELL))
@@ -493,3 +493,10 @@ class Game:
                     break
 
         return mode
+
+    def update_field(self):
+        '''
+        This function fills the field with zero
+        '''
+        global FIELD
+        FIELD = [[0] * (game.WIN_WIDTH // game.SIZE_OF_CELL) for i in range(game.WIN_HEIGHT // game.SIZE_OF_CELL)]

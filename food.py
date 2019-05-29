@@ -2,7 +2,6 @@ from pygame import *
 import random
 from snake import *
 import game
-import my_field
 
 class Food:
     def __init__(self):
@@ -13,7 +12,7 @@ class Food:
 
         x_coord, y_coord = random.randint(0, game.WIN_WIDTH // game.SIZE_OF_CELL - 1), random.randint(0, game.WIN_HEIGHT // game.SIZE_OF_CELL - 1)
 
-        while (my_field.FIELD[y_coord][x_coord]):
+        while (game.FIELD[y_coord][x_coord]):
             x_coord, y_coord = random.randint(0, game.WIN_WIDTH // game.SIZE_OF_CELL - 1), random.randint(0, game.WIN_HEIGHT // game.SIZE_OF_CELL - 1)
 
         self.x_coord = x_coord

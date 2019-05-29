@@ -1,7 +1,6 @@
 from pygame import *
 import random
 from game import *
-import my_field
 from food import *
 
 class Snake:
@@ -27,8 +26,8 @@ class Snake:
         self.location = [[0] * (WIN_WIDTH // SIZE_OF_CELL) for i in range(WIN_HEIGHT // SIZE_OF_CELL)]
         self.location[y_coord][x_coord] = 1
         self.location[y_coord + 1][x_coord] = 1
-        my_field.FIELD[y_coord][x_coord] = 1
-        my_field.FIELD[y_coord + 1][x_coord] = 1
+        game.FIELD[y_coord][x_coord] = 1
+        game.FIELD[y_coord + 1][x_coord] = 1
 
         # direction of move of element of snake
 
@@ -82,7 +81,7 @@ class Snake:
 
             # if snake bumped
 
-            if (my_field.FIELD[(self.head[1] - 1) % (WIN_HEIGHT // SIZE_OF_CELL)][self.head[0]] == 1):
+            if (game.FIELD[(self.head[1] - 1) % (WIN_HEIGHT // SIZE_OF_CELL)][self.head[0]] == 1):
 
                 game.DEFEAT = True
 
@@ -99,14 +98,14 @@ class Snake:
                 self.head[1] -= 1
                 self.head[1] %= (WIN_HEIGHT // SIZE_OF_CELL)
                 self.location[self.head[1]][self.head[0]] = 1
-                my_field.FIELD[self.head[1]][self.head[0]] = 1
+                game.FIELD[self.head[1]][self.head[0]] = 1
                 self.next[self.head[1]][self.head[0]] = 'UP'
 
         elif (self.next[self.head[1]][self.head[0]] == 'DOWN'):
 
             # if snake bumped
 
-            if (my_field.FIELD[(self.head[1] + 1) % (WIN_HEIGHT // SIZE_OF_CELL)][self.head[0]] == 1):
+            if (game.FIELD[(self.head[1] + 1) % (WIN_HEIGHT // SIZE_OF_CELL)][self.head[0]] == 1):
 
                 game.DEFEAT = True
 
@@ -123,14 +122,14 @@ class Snake:
                 self.head[1] += 1
                 self.head[1] %= (WIN_HEIGHT // SIZE_OF_CELL)
                 self.location[self.head[1]][self.head[0]] = 1
-                my_field.FIELD[self.head[1]][self.head[0]] = 1
+                game.FIELD[self.head[1]][self.head[0]] = 1
                 self.next[self.head[1]][self.head[0]] = 'DOWN'
 
         elif (self.next[self.head[1]][self.head[0]] == 'RIGHT'):
 
             # if snake bumped
 
-            if (my_field.FIELD[self.head[1]][(self.head[0] + 1) % (WIN_WIDTH // SIZE_OF_CELL)] == 1):
+            if (game.FIELD[self.head[1]][(self.head[0] + 1) % (WIN_WIDTH // SIZE_OF_CELL)] == 1):
 
                 game.DEFEAT = True
 
@@ -147,14 +146,14 @@ class Snake:
                 self.head[0] += 1
                 self.head[0] %= (WIN_WIDTH // SIZE_OF_CELL)
                 self.location[self.head[1]][self.head[0]] = 1
-                my_field.FIELD[self.head[1]][self.head[0]] = 1
+                game.FIELD[self.head[1]][self.head[0]] = 1
                 self.next[self.head[1]][self.head[0]] = 'RIGHT'
 
         elif (self.next[self.head[1]][self.head[0]] == 'LEFT'):
 
             # if snake bumped
 
-            if (my_field.FIELD[self.head[1]][(self.head[0] - 1) % (WIN_WIDTH // SIZE_OF_CELL)] == 1):
+            if (game.FIELD[self.head[1]][(self.head[0] - 1) % (WIN_WIDTH // SIZE_OF_CELL)] == 1):
 
                 game.DEFEAT = True
 
@@ -171,7 +170,7 @@ class Snake:
                 self.head[0] -= 1
                 self.head[0] %= (WIN_WIDTH // SIZE_OF_CELL)
                 self.location[self.head[1]][self.head[0]] = 1
-                my_field.FIELD[self.head[1]][self.head[0]] = 1
+                game.FIELD[self.head[1]][self.head[0]] = 1
                 self.next[self.head[1]][self.head[0]] = 'LEFT'
 
     def moveTail(self):
@@ -188,7 +187,7 @@ class Snake:
 
             self.next[self.tail[1]][self.tail[0]] = 'NULL'
             self.location[self.tail[1]][self.tail[0]] = 0
-            my_field.FIELD[self.tail[1]][self.tail[0]] = 0
+            game.FIELD[self.tail[1]][self.tail[0]] = 0
             self.tail[1] -= 1
             self.tail[1] %= (WIN_HEIGHT // SIZE_OF_CELL)
 
@@ -203,7 +202,7 @@ class Snake:
 
             self.next[self.tail[1]][self.tail[0]] = 'NULL'
             self.location[self.tail[1]][self.tail[0]] = 0
-            my_field.FIELD[self.tail[1]][self.tail[0]] = 0
+            game.FIELD[self.tail[1]][self.tail[0]] = 0
             self.tail[1] += 1
             self.tail[1] %= (WIN_HEIGHT // SIZE_OF_CELL)
 
@@ -217,7 +216,7 @@ class Snake:
 
             self.next[self.tail[1]][self.tail[0]] = 'NULL'
             self.location[self.tail[1]][self.tail[0]] = 0
-            my_field.FIELD[self.tail[1]][self.tail[0]] = 0
+            game.FIELD[self.tail[1]][self.tail[0]] = 0
             self.tail[0] += 1
             self.tail[0] %= (WIN_WIDTH // SIZE_OF_CELL)
 
@@ -231,7 +230,7 @@ class Snake:
 
             self.next[self.tail[1]][self.tail[0]] = 'NULL'
             self.location[self.tail[1]][self.tail[0]] = 0
-            my_field.FIELD[self.tail[1]][self.tail[0]] = 0
+            game.FIELD[self.tail[1]][self.tail[0]] = 0
             self.tail[0] -= 1
             self.tail[0] %= (WIN_WIDTH // SIZE_OF_CELL)
 
